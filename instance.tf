@@ -1,8 +1,9 @@
-resource "aws_launch_template" "example" {
+resource "aws_launch_template" "ha_project" {
   name_prefix   = "template-"
   image_id      = var.ami_id
   instance_type = var.instance_type
 
+  user_data = base64encode(file("${path.module}/user_data.sh"))
   network_interfaces {
     associate_public_ip_address = true
     security_groups             = [aws_security_group.instance_sg.id]

@@ -1,5 +1,5 @@
 resource "aws_lb" "alb" {
-  name               = "example-alb"
+  name               = "ha-project-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
@@ -25,7 +25,7 @@ resource "aws_security_group" "alb_sg" {
   }
 }
 
-resource "aws_lb_target_group" "example" {
+resource "aws_lb_target_group" "ha_project" {
   name     = "example-tg"
   port     = 80
   protocol = "HTTP"
@@ -41,13 +41,13 @@ resource "aws_lb_target_group" "example" {
   }
 }
 
-resource "aws_lb_listener" "example" {
+resource "aws_lb_listener" "ha_project" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.example.arn
+    target_group_arn = aws_lb_target_group.ha_project.arn
   }
 }
