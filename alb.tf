@@ -33,7 +33,7 @@ resource "aws_lb_target_group" "ha_project" {
 
   health_check {
     path                = "/"
-    interval            = 30
+    interval            = 10
     timeout             = 5
     healthy_threshold   = 5
     unhealthy_threshold = 2

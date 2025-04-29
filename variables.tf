@@ -26,3 +26,9 @@ variable "ami_id" {
   description = "AMI ID for the EC2 instances"
 }
 
+variable "ubuntu_password" {
+  description = "Password for ubuntu user"
+  type        = string
+}
+
+
