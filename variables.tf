@@ -31,4 +31,13 @@ variable "ubuntu_password" {
   type        = string
 }
 
+#variable "PATH_TO_PRIVATE_KEY" {
+#  default = "mykey"
+#}
+
+variable "key_name" {
+  default = "mykey.pub"
+}
+
+
 

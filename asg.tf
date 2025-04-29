@@ -3,7 +3,8 @@ resource "aws_autoscaling_group" "ha_project" {
   desired_capacity          = 2
   max_size                  = 3
   min_size                  = 1
-  vpc_zone_identifier       = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+#  vpc_zone_identifier       = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  vpc_zone_identifier       = [aws_subnet.private_a.id, aws_subnet.private_b.id]
   target_group_arns         = [aws_lb_target_group.ha_project.arn]
   health_check_type         = "ELB"
   health_check_grace_period = 300

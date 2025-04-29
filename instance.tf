@@ -3,18 +3,27 @@ resource "aws_launch_template" "ha_project" {
   image_id      = var.ami_id
   instance_type = var.instance_type
 
-  user_data = base64encode(file("${path.module}/user_data.sh"))
-  network_interfaces {
-    associate_public_ip_address = true
-    security_groups             = [aws_security_group.instance_sg.id]
+iam_instance_profile {
+  arn = aws_iam_instance_profile.ssm_instance_profile.arn
+}
+
+user_data = base64encode(file("${path.module}/user_data.sh"))
+  
+network_interfaces {
+  associate_public_ip_address = true
+  security_groups             = [aws_security_group.instance_sg.id]
+}
+
+# the public SSH key
+key_name = aws_key_pair.mykeypair.key_name
+
+tag_specifications {
+  resource_type = "instance"
+  tags = {
+    Name = "project"
+    Environment = "ha_project"
   }
-  tag_specifications {
-    resource_type = "instance"
-    tags = {
-      Name = "project"
-      Environment = "ha_project"
-    }
-  }
+ }
 }
 
 resource "aws_security_group" "instance_sg" {

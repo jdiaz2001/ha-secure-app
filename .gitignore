@@ -5,6 +5,9 @@
 *.plan
 *.tfvars
 .DS_Store
+mykey
+mykey.pub
+test.tf.old
 
 # Ignore Terraform directories
 .terraform/
