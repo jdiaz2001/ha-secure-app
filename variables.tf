@@ -8,14 +8,14 @@ variable "profile" {
   description= "The AWS SSO profile to be used"
 }
 
-variable "vpc_id" {
-  description = "VPC ID to launch resources in"
-}
+#variable "vpc_id" {
+#  description = "VPC ID to launch resources in"
+#}
 
-variable "subnet_ids" {
-  description = "List of Subnet IDs"
-  type        = list(string)
-}
+#variable "subnet_ids" {
+#  description = "List of Subnet IDs"
+#  type        = list(string)
+#}
 
 variable "instance_type" {
   description = "EC2 instance type"

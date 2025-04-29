@@ -8,17 +8,24 @@ resource "aws_launch_template" "ha_project" {
     associate_public_ip_address = true
     security_groups             = [aws_security_group.instance_sg.id]
   }
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name = "project"
+      Environment = "ha_project"
+    }
+  }
 }
 
 resource "aws_security_group" "instance_sg" {
   name_prefix = "instance-sg-"
-  vpc_id      = var.vpc_id
-
+  vpc_id = aws_vpc.main.id
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  
+    security_groups = [aws_security_group.alb_sg.id]
   }
 
   egress {
