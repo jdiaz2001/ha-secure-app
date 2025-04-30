@@ -8,15 +8,6 @@ variable "profile" {
   description= "The AWS SSO profile to be used"
 }
 
-#variable "vpc_id" {
-#  description = "VPC ID to launch resources in"
-#}
-
-#variable "subnet_ids" {
-#  description = "List of Subnet IDs"
-#  type        = list(string)
-#}
-
 variable "instance_type" {
   description = "EC2 instance type"
   default     = "t2.micro"
@@ -31,13 +22,17 @@ variable "ubuntu_password" {
   type        = string
 }
 
-#variable "PATH_TO_PRIVATE_KEY" {
-#  default = "mykey"
-#}
-
 variable "key_name" {
   default = "mykey.pub"
 }
 
+variable "local_ip" {
+  default = "my_ip"
+}
 
+variable "private_key_content" {
+  description = "Contents of mykey.pem (the private key)"
+  type        = string
+  sensitive   = true
+}
 
