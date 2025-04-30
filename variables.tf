@@ -17,9 +17,15 @@ variable "ami_id" {
   description = "AMI ID for the EC2 instances"
 }
 
-variable "ubuntu_password" {
+variable "new_password" {
   description = "Password for ubuntu user"
   type        = string
+}
+
+variable "new_user" {
+  description = "New user to be created"
+  type        = string
+  
 }
 
 variable "key_name" {
@@ -29,10 +35,3 @@ variable "key_name" {
 variable "local_ip" {
   default = "my_ip"
 }
-
-variable "private_key_content" {
-  description = "Contents of mykey.pem (the private key)"
-  type        = string
-  sensitive   = true
-}
-

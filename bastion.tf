@@ -31,7 +31,7 @@ resource "aws_security_group" "bastion_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.local_ip}/32"]  # TODO: Replace with your real IP or use a variable
+    cidr_blocks = ["${var.local_ip}/32"]
   }
 
   egress {
@@ -45,5 +45,4 @@ resource "aws_security_group" "bastion_sg" {
     Name = "bastion-sg"
   }
 }
-
 

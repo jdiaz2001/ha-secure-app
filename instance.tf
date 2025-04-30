@@ -7,7 +7,10 @@ iam_instance_profile {
   arn = aws_iam_instance_profile.ssm_instance_profile.arn
 }
 
-user_data = base64encode(file("${path.module}/user_data.sh"))
+user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
+  username = var.new_user,
+  password = var.new_password
+}))
   
 network_interfaces {
   associate_public_ip_address = true
