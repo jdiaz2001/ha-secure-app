@@ -11,11 +11,9 @@ user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
   username = var.new_user,
   password = var.new_password
 }))
-  
-network_interfaces {
-  associate_public_ip_address = true
-  security_groups             = [aws_security_group.instance_sg.id]
-}
+
+# No Public IP  
+vpc_security_group_ids = [aws_security_group.instance_sg.id]
 
 # the public SSH key
 key_name = aws_key_pair.mykeypair.key_name
