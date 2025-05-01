@@ -35,3 +35,13 @@ variable "key_name" {
 variable "local_ip" {
   default = "my_ip"
 }
+
+variable "domain" {
+  type = string
+  description= "The domain name for the Load Balancer"
+}
+
+variable "route53_zone_id" {
+  type = string
+  description= "The Route53 zone_id for the domain"
+}

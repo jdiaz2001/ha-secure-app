@@ -8,10 +8,18 @@ resource "aws_lb" "alb" {
 
 resource "aws_security_group" "alb_sg" {
   name_prefix = "alb-sg-"
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
+
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -28,25 +36,52 @@ resource "aws_lb_target_group" "ha_project" {
   name     = "ha-project-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id = aws_vpc.main.id
+  vpc_id   = aws_vpc.main.id
 
   health_check {
     path                = "/"
     interval            = 30
     timeout             = 10
-    healthy_threshold   = 3   # 3 successful health checks to be considered healthy
-    unhealthy_threshold = 2   # 2 failed health checks to be considered unhealthy
+    healthy_threshold   = 3
+    unhealthy_threshold = 2
     matcher             = "200"
   }
 }
 
-resource "aws_lb_listener" "ha_project" {
+# HTTP Listener: redirect to HTTPS
+resource "aws_lb_listener" "http_redirect" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+# HTTPS Listener using ACM certificate
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.cert.arn
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.ha_project.arn
   }
 }
+
+# Associate WAF with ALB
+resource "aws_wafv2_web_acl_association" "alb_waf" {
+  resource_arn = aws_lb.alb.arn
+  web_acl_arn  = aws_wafv2_web_acl.ha_project_waf.arn
+}
+
+
