@@ -8,10 +8,15 @@ iam_instance_profile {
 }
 
 user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
-  username = var.new_user,
-  password = var.new_password
-  efs_id   = aws_efs_file_system.shared.id
-  db_endpoint = aws_db_instance.mariadb.address
+  username       = var.new_user,
+  password       = var.new_password,
+  efs_id         = aws_efs_file_system.shared.id,
+  db_endpoint    = aws_db_instance.mariadb.address,
+  nginx_script   = file("${path.module}/scripts/01-nginx.sh"),
+  user_script    = file("${path.module}/scripts/02-user.sh"),
+  efs_script     = file("${path.module}/scripts/03-efs.sh"),
+  rds_script     = file("${path.module}/scripts/04-rds.sh"),
+  update_script  = file("${path.module}/scripts/9-system-update.sh")
 }))
 
 # No Public IP on the instances

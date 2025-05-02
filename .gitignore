@@ -7,7 +7,6 @@
 .DS_Store
 mykey
 mykey.pub
-test.tf.old
-
+*.old
 # Ignore Terraform directories
 .terraform/
