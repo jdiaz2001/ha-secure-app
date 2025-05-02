@@ -11,6 +11,7 @@ user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
   username = var.new_user,
   password = var.new_password
   efs_id   = aws_efs_file_system.shared.id
+  db_endpoint = aws_db_instance.mariadb.address
 }))
 
 # No Public IP on the instances

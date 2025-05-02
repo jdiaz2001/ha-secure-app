@@ -1,4 +1,6 @@
 #!/bin/bash
+
+#----- NGINX INSTALLATION -----
 # Update the system and install Nginx
 apt-get update -y
 apt-get install nginx -y
@@ -6,7 +8,7 @@ systemctl enable nginx
 systemctl start nginx
 echo "<h1>Hello from $(hostname)</h1>" > /var/www/html/index.html
 
-# Create user
+#----- USER CREATION -----
 useradd -m -s /bin/bash ${username}
 echo "${username}:${password}" | chpasswd
 usermod -aG sudo ${username}
@@ -14,6 +16,8 @@ usermod -aG sudo ${username}
 # Enable password authentication in SSH
 sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
 systemctl restart ssh
+
+#----- EFS MOUNTING -----
 
 # Install dependencies
 apt-get install -y git binutils curl build-essential libssl-dev pkg-config \
@@ -45,3 +49,12 @@ mkdir -p /mnt/efs
 
 # Mount the EFS file system
 mount -t efs -o tls ${efs_id}:/ /mnt/efs
+
+### ------ RDS INSTALLATION ------
+sudo apt install -y mariadb-client
+
+#----- SYSTEM UPDATE -----
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+

@@ -45,3 +45,15 @@ variable "route53_zone_id" {
   type = string
   description= "The Route53 zone_id for the domain"
 }
+
+variable "db_username" {
+  type        = string
+  description = "MariaDB admin username"
+  default     = "admin"
+}
+
+variable "db_password" {
+  type        = string
+  description = "MariaDB password"
+  sensitive   = true
+}
