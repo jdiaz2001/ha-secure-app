@@ -10,13 +10,16 @@ iam_instance_profile {
 user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
   username       = var.new_user,
   password       = var.new_password,
+  server_name    = var.domain,
   efs_id         = aws_efs_file_system.shared.id,
   db_endpoint    = aws_db_instance.mariadb.address,
-  nginx_script   = file("${path.module}/scripts/01-nginx.sh"),
+  logs_script    = file("${path.module}/scripts/05-logs.sh"),
   user_script    = file("${path.module}/scripts/02-user.sh"),
-  efs_script     = file("${path.module}/scripts/03-efs.sh"),
+  nginx_script   = file("${path.module}/scripts/01-nginx.sh"),
   rds_script     = file("${path.module}/scripts/04-rds.sh"),
-  update_script  = file("${path.module}/scripts/9-system-update.sh")
+  opencart_script = "", #file("${path.module}/scripts/06-opencart.sh"),
+  efs_script     = file("${path.module}/scripts/03-efs.sh"),
+  update_script  = file("${path.module}/scripts/09-system-update.sh")
 }))
 
 # No Public IP on the instances
