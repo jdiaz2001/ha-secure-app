@@ -38,17 +38,6 @@ resource "aws_lb_target_group" "ha_project" {
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
 
-
-  health_check {
-    path                = "/" 
-    interval            = 30
-    timeout             = 10
-    healthy_threshold   = 3
-    unhealthy_threshold = 2
-    matcher             = "200"
-  }
-}
-/*
   health_check {
     path                = "/healthcheck.html"   # or "/index.php"
     interval            = 60                    # Check every 60 seconds
@@ -58,7 +47,7 @@ resource "aws_lb_target_group" "ha_project" {
     matcher             = "200"
   }
 }
-*/
+
 
 # HTTP Listener: redirect to HTTPS
 resource "aws_lb_listener" "http_redirect" {

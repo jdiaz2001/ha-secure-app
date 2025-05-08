@@ -26,13 +26,13 @@ cat > /opt/aws/amazon-cloudwatch-agent/bin/config.json <<EOF
             "log_stream_name": "{instance_id}"
           },
           {
-            "file_path": "/var/log/nginx/access.log",
-            "log_group_name": "nginx-access.log",
+            "file_path": "/var/log/apache2/access.log",
+            "log_group_name": "apache-access.log",
             "log_stream_name": "{instance_id}"
           },
           {
-            "file_path": "/var/log/nginx/error.log",
-            "log_group_name": "nginx-error.log",
+            "file_path": "/var/log/apache2/error.log",
+            "log_group_name": "apache-error.log",
             "log_stream_name": "{instance_id}"
           },
           {
