@@ -38,16 +38,15 @@ resource "aws_lb_target_group" "ha_project" {
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
 
-  health_check {
-    path                = "/healthcheck.html"   # or "/index.php"
-    interval            = 60                    # Check every 60 seconds
-    timeout             = 30                    # Wait 30s before timing out
-    healthy_threshold   = 2                     # Need 2 healthy checks
-    unhealthy_threshold = 5                     # Allow up to 5 failures
-    matcher             = "200"
-  }
+health_check {
+  path                = "/healthcheck.html"
+  interval            = 60        # Check every 60 seconds
+  timeout             = 30        # Timeout after 30 seconds (must be < interval)
+  healthy_threshold   = 5         # Needs 5 consecutive successful checks (5 mins)
+  unhealthy_threshold = 10        # Fails after 10 consecutive failures (10 mins)
+  matcher             = "200"
+ }
 }
-
 
 # HTTP Listener: redirect to HTTPS
 resource "aws_lb_listener" "http_redirect" {

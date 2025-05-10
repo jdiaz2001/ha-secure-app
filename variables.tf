@@ -49,11 +49,15 @@ variable "route53_zone_id" {
 variable "db_username" {
   type        = string
   description = "MariaDB admin username"
-  default     = "admin"
 }
 
 variable "db_password" {
   type        = string
   description = "MariaDB password"
   sensitive   = true
+}
+
+variable "install_dir" {
+  type        = string
+  description = "Directory for OpenCart installation"
 }

@@ -8,8 +8,10 @@ export DB_PASSWORD="${db_password}"
 export EFS_ID="${efs_id}"
 export DB_ENDPOINT="${db_endpoint}"
 export SERVER_NAME="${server_name}"
+export INSTALL_FOLDER="${install_folder}"
 
-# --- Run Scripts ---
+# --- Order in which scripts are run ---
+
 echo "Exporting Logs to CloudWatch"
 ${logs_script}
 
@@ -19,6 +21,9 @@ ${user_script}
 echo "Running Apache setup"
 ${apache_script}
 
+echo "Mounting EFS"
+${efs_script}
+
 echo "Installing MariaDB client"
 ${rds_script}
 
@@ -27,9 +32,6 @@ ${opencart_script}
 
 echo "Modifying Config files OpenCart"
 ${oc_config_script}
-
-echo "Mounting EFS"
-${efs_script}
 
 echo "Running system update"
 ${update_script}

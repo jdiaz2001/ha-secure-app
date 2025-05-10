@@ -13,6 +13,7 @@ user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
   server_name    = var.domain,
   db_username    = var.db_username,
   db_password    = var.db_password,
+  install_folder = var.install_dir,
   db_endpoint    = aws_db_instance.mariadb.address,
   efs_id         = aws_efs_file_system.shared.id
   logs_script    = file("${path.module}/scripts/05-logs.sh"),

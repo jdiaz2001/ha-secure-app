@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE="/var/www/html/opencart/config.php"
+CONFIG_FILE="${INSTALL_FOLDER}/config.php"
 
 # Backup the original file
 cp "$CONFIG_FILE" "$CONFIG_FILE.bak"
@@ -15,14 +15,14 @@ sed -i "/define('HTTP_SERVER', 'http:\/\/${SERVER_NAME}\/opencart\/');/ {
 # Comment out and add new DIR_STORAGE definition
 sed -i "/define('DIR_STORAGE', DIR_SYSTEM . 'storage\/');/ {
     s/^/\/\/ /
-    a define('DIR_STORAGE', '/var/www/storage/');
+    a define('DIR_STORAGE', '/mnt/efs/www/storage/');
 }" "$CONFIG_FILE"
 
 echo "Modifications completed. Original file backed up as config.php.bak"
 
 #!/bin/bash
 
-CONFIG_FILE_2="/var/www/html/opencart/admin/config.php"
+CONFIG_FILE_2="${INSTALL_FOLDER}/admin/config.php"
 
 # Backup the original file
 cp "$CONFIG_FILE_2" "$CONFIG_FILE_2.bak"
@@ -42,7 +42,7 @@ sed -i "/define('HTTP_CATALOG', 'http:\/\/${SERVER_NAME}\/opencart\/');/ {
 # Comment and replace DIR_STORAGE
 sed -i "/define('DIR_STORAGE', DIR_SYSTEM . 'storage\/');/ {
     s/^/\/\/ /
-    a define('DIR_STORAGE', '/var/www/storage/');
+    a define('DIR_STORAGE', '/mnt/efs/www/storage/');
 }" "$CONFIG_FILE_2"
 
 echo "Modifications completed for admin/config.php. Backup created as config.php.bak"

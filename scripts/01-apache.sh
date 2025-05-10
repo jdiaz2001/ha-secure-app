@@ -41,8 +41,8 @@ cat <<EOF > /etc/apache2/sites-available/opencart.conf
     ServerName ${SERVER_NAME}
     ServerAlias www.${SERVER_NAME}
 
-    DocumentRoot /var/www/html/opencart
-    <Directory /var/www/html/opencart>
+    DocumentRoot ${INSTALL_FOLDER}
+    <Directory ${INSTALL_FOLDER}>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
