@@ -1,3 +1,4 @@
+# IAM Role and Instance Profile for EC2 Instances
 resource "aws_iam_role" "ssm_instance_role" {
   name = "ssm-instance-role"
 

@@ -1,3 +1,4 @@
+# EFS (Elastic File System) configuration for HA project
 resource "aws_efs_file_system" "shared" {
   creation_token = "ha-project-efs"
   lifecycle_policy {
@@ -8,6 +9,7 @@ resource "aws_efs_file_system" "shared" {
   }
 }
 
+# EFS Security Group
 resource "aws_security_group" "efs_sg" {
   name_prefix = "efs-sg-"
   vpc_id      = aws_vpc.main.id
@@ -16,7 +18,7 @@ resource "aws_security_group" "efs_sg" {
     from_port       = 2049
     to_port         = 2049
     protocol        = "tcp"
-    security_groups = [aws_security_group.instance_sg.id] # EC2s
+    security_groups = [aws_security_group.instance_sg.id] 
   }
 
   egress {
@@ -27,6 +29,7 @@ resource "aws_security_group" "efs_sg" {
   }
 }
 
+# Mount targets for EFS in both private subnets
 resource "aws_efs_mount_target" "a" {
   file_system_id  = aws_efs_file_system.shared.id
   subnet_id       = aws_subnet.private_a.id

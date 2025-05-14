@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#----- EFS MOUNTING -----
 # --- Variables ---
 EFS_MOUNT_POINT="/mnt/efs"
 INSTALL_DIR="${EFS_MOUNT_POINT}/www/html/opencart"  # Fully resolved install path
@@ -11,7 +10,7 @@ apt-get install -y git binutils curl build-essential libssl-dev pkg-config \
     libprotobuf-dev protobuf-compiler cmake
 
 # Install Rust (required for building efs-utils)
-echo "=== Install Rust (required for building efs-utils) ==="
+echo "Install Rust (required for building efs-utils)"
 export CARGO_HOME=/root/.cargo
 export PATH=$CARGO_HOME/bin:$PATH
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -23,22 +22,22 @@ if ! command -v cargo &> /dev/null; then
 fi
 
 # Install amazon-efs-utils from source
-echo "=== Install amazon-efs-utils from source ==="
+echo "Install amazon-efs-utils from source"
 git clone https://github.com/aws/efs-utils /tmp/efs-utils
 cd /tmp/efs-utils
 ./build-deb.sh
 apt install -y ./build/amazon-efs-utils*deb
 
 # Create base mount point
-echo "=== Creating EFS mount point at ${EFS_MOUNT_POINT} ==="
+echo "Creating EFS mount point at ${EFS_MOUNT_POINT}"
 mkdir -p "${EFS_MOUNT_POINT}"
 
 # Mount the EFS file system
-echo "=== Mounting the EFS file system ==="
+echo "Mounting the EFS file system"
 mount -t efs -o tls "$EFS_ID":/ "${EFS_MOUNT_POINT}"
 
 # Wait for the mount to be ready
-echo "=== Waiting for EFS mount ==="
+echo "Waiting for EFS mount"
 MAX_RETRIES=30
 RETRY_DELAY=5
 for ((i=1; i<=MAX_RETRIES; i++)); do
@@ -56,7 +55,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
     fi
 done
 
-echo "=== Creating healthcheck file ==="
+echo "Creating healthcheck file"
 
 # Ensure the installation directory exists
 if [ ! -d "${INSTALL_DIR}" ]; then
@@ -73,11 +72,6 @@ else
   echo "INSTALL_DIR already exists: ${INSTALL_DIR}"
 fi
 
-# Now create the healthcheck file
+# Create the healthcheck file
 echo "OK" > "${INSTALL_DIR}/healthcheck.html"
 echo "Healthcheck file created at ${INSTALL_DIR}/healthcheck.html"
-
-
-# Optional: Set permissions
-# chown -R ${WEB_USER}:${WEB_USER} ${INSTALL_DIR}
-# chmod -R 755 ${INSTALL_DIR}

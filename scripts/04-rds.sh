@@ -1,4 +1,4 @@
 #!/bin/bash
 
-#----- RDS CLIENT INSTALLATION -----
+# RDS CLIENT INSTALLATION
 apt-get install -y mariadb-client

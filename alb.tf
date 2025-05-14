@@ -1,3 +1,4 @@
+# ACM Certificate and Route53 DNS Validation
 resource "aws_lb" "alb" {
   name               = "ha-project-alb"
   internal           = false
@@ -6,6 +7,8 @@ resource "aws_lb" "alb" {
   subnets            = [aws_subnet.public_a.id, aws_subnet.public_b.id]
 }
 
+# Security Group for ALB
+# This security group allows HTTP and HTTPS traffic from anywhere
 resource "aws_security_group" "alb_sg" {
   name_prefix = "alb-sg-"
   vpc_id      = aws_vpc.main.id
@@ -32,13 +35,15 @@ resource "aws_security_group" "alb_sg" {
   }
 }
 
+# Target Group for ALB
 resource "aws_lb_target_group" "ha_project" {
   name     = "ha-project-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
 
-health_check {
+# Health Check Configuration
+  health_check {
   path                = "/healthcheck.html"
   interval            = 60        # Check every 60 seconds
   timeout             = 30        # Timeout after 30 seconds (must be < interval)

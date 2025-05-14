@@ -1,3 +1,4 @@
+# MariaDB RDS instance
 resource "aws_db_subnet_group" "mariadb_subnet_group" {
   name       = "mariadb-subnet-group"
   subnet_ids = [aws_subnet.private_a.id, aws_subnet.private_b.id]
@@ -7,6 +8,7 @@ resource "aws_db_subnet_group" "mariadb_subnet_group" {
   }
 }
 
+# DB Subnet Group for MariaDB
 resource "aws_security_group" "mariadb_sg" {
   name_prefix = "mariadb-sg-"
   vpc_id      = aws_vpc.main.id
@@ -30,6 +32,7 @@ resource "aws_security_group" "mariadb_sg" {
   }
 }
 
+# MariaDB Instance
 resource "aws_db_instance" "mariadb" {
   identifier              = "ha-project-mariadb"
   allocated_storage       = 20
@@ -45,7 +48,7 @@ resource "aws_db_instance" "mariadb" {
   publicly_accessible     = false
   multi_az                = false
   deletion_protection     = false
-  backup_retention_period = 0 # Disable automatic backups to save cost
+  backup_retention_period = 0 
 
   tags = {
     Name = "ha-project-mariadb"

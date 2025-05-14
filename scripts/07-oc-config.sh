@@ -20,8 +20,6 @@ sed -i "/define('DIR_STORAGE', DIR_SYSTEM . 'storage\/');/ {
 
 echo "Modifications completed. Original file backed up as config.php.bak"
 
-#!/bin/bash
-
 CONFIG_FILE_2="${INSTALL_FOLDER}/admin/config.php"
 
 # Backup the original file

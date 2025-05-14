@@ -9,13 +9,6 @@ apt-get upgrade -y
 echo "Installing essential packages..."
 apt-get install -y apache2 unzip wget software-properties-common
 
-# ## -------- Setup Apache for initial Testing  -------- ##
-# ## lines 14 to 17 are for testing only
-# systemctl enable apache2
-# systemctl start apache2
-# echo "<h1>Hello from $(hostname)</h1>" > /var/www/html/index.html
-
-# -------- Setup Apache for OpenCart -------- ##
 # Enable and start Apache
 systemctl enable apache2
 systemctl start apache2
@@ -54,13 +47,12 @@ cat <<EOF > /etc/apache2/sites-available/opencart.conf
 EOF
 
 # Disable the default site and enable OpenCart
-echo "Enabling site..."
+echo "Enabling Apache Site..."
 a2dissite 000-default.conf
 a2ensite opencart.conf
 
 # Restart Apache to apply changes
-echo "Restarting Apache..."
+echo "Restarting Apache Service..."
 systemctl restart apache2
-#systemctl enable apache2
 
 echo "Apache with OpenCart configuration SUCCESSFULLY!"

@@ -1,3 +1,4 @@
+# WAF configuration for HA Project
 resource "aws_wafv2_web_acl" "ha_project_waf" {
   name        = "ha-project-waf"
   description = "WAF for HA Project ALB"
@@ -13,6 +14,7 @@ resource "aws_wafv2_web_acl" "ha_project_waf" {
     sampled_requests_enabled   = true
   }
 
+# Free Rules for WAF
   rule {
     name     = "AWS-AWSManagedRulesCommonRuleSet"
     priority = 1

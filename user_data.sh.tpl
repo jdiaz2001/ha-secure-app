@@ -10,7 +10,7 @@ export DB_ENDPOINT="${db_endpoint}"
 export SERVER_NAME="${server_name}"
 export INSTALL_FOLDER="${install_folder}"
 
-# --- Order in which scripts are run ---
+# Order in which scripts are run
 
 echo "Exporting Logs to CloudWatch"
 ${logs_script}

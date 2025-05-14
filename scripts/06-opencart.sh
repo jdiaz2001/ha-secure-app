@@ -6,23 +6,23 @@ set -e
 # Redirect all output to cloud-init-output.log and console
 exec > >(tee -a /var/log/cloud-init-output.log | logger -t user-data -s 2>/dev/console) 2>&1
 
-# --- Variables ---
+# Variables
 OPENCART_VERSION="4.0.2.3"
-DB_HOST="$DB_ENDPOINT"             # Injected by Terraform
-SERVER="$SERVER_NAME"              # Injected by Terraform
+DB_HOST="$DB_ENDPOINT"                      # Injected by Terraform
+SERVER="$SERVER_NAME"                       # Injected by Terraform
 DB_NAME="opencart"
-DB_USER="$DB_USERNAME"             # Injected by Terraform
-DB_PASS="$DB_PASSWORD"             # Injected by Terraform
+DB_USER="$DB_USERNAME"                      # Injected by Terraform
+DB_PASS="$DB_PASSWORD"                      # Injected by Terraform
 ADMIN_USER="admin"
-ADMIN_PASS="$NEW_PASSWORD"         # Injected by Terraform
+ADMIN_PASS="$NEW_PASSWORD"                  # Injected by Terraform
 ADMIN_EMAIL="testemail@gmail.com"
-INSTALL_DIR="/mnt/efs/www/html/opencart"  # Fully resolved path
+INSTALL_DIR="/mnt/efs/www/html/opencart"  
 WEB_USER="www-data"
 MAX_RETRIES=30
 RETRY_DELAY=10
 
-# --- Wait for EFS to be mounted ---
-echo "=== Waiting for EFS mount at ${INSTALL_DIR} ==="
+# Wait for EFS to be mounted
+echo "Waiting for EFS mount at ${INSTALL_DIR}"
 for ((i=1; i<=MAX_RETRIES; i++)); do
     if mountpoint -q "/mnt/efs"; then
         echo "EFS is mounted."
@@ -38,8 +38,8 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
     fi
 done
 
-# --- Wait for MySQL to be ready ---
-echo "=== Waiting for MySQL at ${DB_HOST} to become available ==="
+# Wait for MySQL to be ready
+echo "Waiting for MySQL at ${DB_HOST} to become available"
 for ((i=1;i<=MAX_RETRIES;i++)); do
     if mysqladmin ping -h${DB_HOST} -u${DB_USER} -p${DB_PASS} --silent; then
         echo "MySQL is available."
@@ -55,24 +55,24 @@ for ((i=1;i<=MAX_RETRIES;i++)); do
     fi
 done
 
-# --- Download and Install OpenCart ---
-echo "=== Downloading OpenCart ${OPENCART_VERSION} ==="
+# Download and Install OpenCart
+echo "Downloading OpenCart ${OPENCART_VERSION}"
 wget -q "https://github.com/opencart/opencart/releases/download/${OPENCART_VERSION}/opencart-${OPENCART_VERSION}.zip" -O /tmp/opencart.zip
 
-echo "=== Extracting OpenCart ==="
+echo "Extracting OpenCart"
 unzip -q /tmp/opencart.zip -d /tmp/opencart
 cp -r /tmp/opencart/opencart-${OPENCART_VERSION}/upload/* "${INSTALL_DIR}"
 cp "${INSTALL_DIR}/config-dist.php" "${INSTALL_DIR}/config.php"
 cp "${INSTALL_DIR}/admin/config-dist.php" "${INSTALL_DIR}/admin/config.php"
 
-echo "=== Setting permissions ==="
+echo "Setting permissions for Opencart Folder"
 chown -R ${WEB_USER}:${WEB_USER} "${INSTALL_DIR}"
 chmod -R 755 "${INSTALL_DIR}"
 
-echo "=== Creating database if not exists ==="
+echo "Creating database if not exists"
 mysql -h${DB_HOST} -u${DB_USER} -p${DB_PASS} -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 
-echo "=== Install Opencart ==="
+echo "Install Opencart"
 PHP_SCRIPT="${INSTALL_DIR}/install/cli_install.php"
 
 php "$PHP_SCRIPT" install \
@@ -88,10 +88,10 @@ php "$PHP_SCRIPT" install \
   --db_port 3306 \
   --db_prefix oc_
 
-echo "=== Cleaning up ==="
+echo "Cleaning up Instalation files"
 rm -rf "${INSTALL_DIR}/install"
 
-echo "=== Moving storage directory ==="
+echo "Moving storage directory"
 mv "${INSTALL_DIR}/system/storage/" /mnt/efs/www/
 
 echo "OpenCart installation complete!"

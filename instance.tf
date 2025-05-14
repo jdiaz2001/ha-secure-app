@@ -1,3 +1,4 @@
+# Instance Module
 resource "aws_launch_template" "ha_project" {
   name_prefix   = "template-"
   image_id      = var.ami_id
@@ -7,6 +8,7 @@ iam_instance_profile {
   arn = aws_iam_instance_profile.ssm_instance_profile.arn
 }
 
+# User data script to run on instance launch
 user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
   username       = var.new_user,
   password       = var.new_password,
@@ -19,10 +21,10 @@ user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
   logs_script    = file("${path.module}/scripts/05-logs.sh"),
   user_script    = file("${path.module}/scripts/02-user.sh"),
   apache_script   = file("${path.module}/scripts/01-apache.sh"),
+  efs_script     = file("${path.module}/scripts/03-efs.sh"),
   rds_script     = file("${path.module}/scripts/04-rds.sh"),
   opencart_script = file("${path.module}/scripts/06-opencart.sh"),
   oc_config_script = file("${path.module}/scripts/07-oc-config.sh"),
-  efs_script     = file("${path.module}/scripts/03-efs.sh"),
   update_script  = file("${path.module}/scripts/09-system-update.sh")
 }))
 
@@ -41,6 +43,7 @@ tag_specifications {
  }
 }
 
+# EC2 Security Group
 resource "aws_security_group" "instance_sg" {
   name_prefix = "instance-sg-"
   vpc_id = aws_vpc.main.id

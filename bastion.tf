@@ -1,4 +1,5 @@
 
+# This module creates a bastion host in the public subnet of the VPC.
 resource "aws_instance" "bastion" {
   ami                         = var.ami_id
   instance_type               = var.instance_type
@@ -22,6 +23,8 @@ resource "aws_security_group_rule" "allow_ssh_from_bastion" {
   security_group_id        = aws_security_group.instance_sg.id
   description              = "Allow SSH from Bastion Host"
 }
+
+# Add SSH ingress rule to allow SSH from your IP
 resource "aws_security_group" "bastion_sg" {
   name_prefix = "bastion-sg-"
   vpc_id      = aws_vpc.main.id
