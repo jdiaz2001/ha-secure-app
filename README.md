@@ -1,4 +1,5 @@
 # HA Secure App Terraform Project
+## High Availability Opencart E-Commerce Site with IaC.
 
 This project is a highly available and secure infrastructure setup for deploying a web application using Terraform. It leverages AWS services to ensure scalability, reliability, and security. For this project I chose OpenCart (Open Source E-Commerce) as the application to be deployed.
 
@@ -43,25 +44,25 @@ The infrastructure includes the following components:
 
 ## File Structure
 
-- **`vpc.tf`**: Defines the VPC, subnets, and NAT gateway.
-- **`alb.tf`**: Configures the Application Load Balancer and its listeners.
+- **`vpc.tf`**: Defines the VPC, subnets, Internet gateway and NAT gateway.
+- **`alb.tf`**: Configures the Application Load Balancer and its listeners. `Note:` By Default it needs two public AZs to be deployed.
 - **`asg.tf`**: Sets up the Auto Scaling Group and Launch Template.
-- **`efs.tf`**: Configures the Elastic File System and its mount targets.
+- **`efs.tf`**: Configures the Elastic File System and its mount targets. `Note:` EFS will store the Data for the application.
 - **`rds.tf`**: Defines the MariaDB RDS instance and its security group.
-- **`bastion.tf`**: Creates the bastion host and its security group.
+- **`bastion.tf`**: Creates the bastion host and its security group. `Note:` The Bastion will the the entrance to access the Private Subnet Instances
 - **`iam.tf`**: Configures IAM roles, policies, and instance profiles.
 - **`route53.tf`**: Manages DNS records for the domain.
 - **`acm.tf`**: Sets up the ACM certificate and validation records.
-- **`waf.tf`**: Configures the Web Application Firewall.
+- **`waf.tf`**: Configures the Web Application Firewall. `Note:` Free WAF Rules have been applied.
 - **`variables.tf`**: Defines input variables for the project.
 - **`outputs.tf`**: Outputs key information like ALB DNS name and RDS endpoint.
 - **`scripts/`**: Contains bash scripts for configuring instances (e.g., Apache, OpenCart, EFS).
 
 ## Scripts. 
-### This applies specifically to your application. In this case, the scripts were create to install and configure Opencart
+#### This applies specifically to your application. In this case, the scripts were create to install and configure Opencart
 
 - **`01-apache.sh`**: Sets up the Apache web server and PHP environment.
-- **`02-user.sh`**: Creates a new user with sudo privileges and configures SSH for password authentication. (`Note:` This is not ideal... In my case, I wanted to use VS-Code Terminal to troubleshot the Opencart Scripts on the new Private Instances). You can use `Session Mannager` instead and disable SSH Password authentication.
+- **`02-user.sh`**: Creates a new user with sudo privileges and configures SSH for password authentication from the Bastion Host. (`Note:` This is not ideal... In my case, I wanted to use VS-Code Terminal to troubleshot the Opencart Scripts on the new Private Instances). You can use `Session Mannager` instead and disable SSH Password authentication.
 - **`03-efs.sh`**: Mounts the Elastic File System (EFS) and prepares the directory structure.
 - **`04-rds.sh`**: Installs the MariaDB client for interacting with the RDS database.
 - **`05-logs.sh`**: Configures and starts the CloudWatch Agent for centralized log monitoring.
@@ -77,20 +78,20 @@ The infrastructure includes the following components:
 - `SSO Authentication:` Our user account will authenticate via SSO into the target AWS account where resources will be deployed.
 - `Review and customize` the variables in `variables.tf` and `terraform.tfvars.example` files to override defaults.
 
-    | Variable           | Description                          | 
-    |--------------------|--------------------------------------|
-    | `domain`           | Domain name for the website          |
-    | `aws region`       | AWS region for the bucket            |
-    | `profile`          | AWS SSO Profile to be used           |
-    | `route53`          | ZXXXX ... Domain Hosted Zone ID      |
-    | `instance_tupe`    | e.g: T2.micro                        |
-    | `ami_id`           | ami-XXXXX used. This projects Ubuntu |
-    | `new_user`         | sudo user to login EC2 Instances     |
-    | `new_password`     | sudo user password                   |
-    | `local_ip`         | Your IP Address. to secure log in    |
-    | `db_username`      | DB username with full access         |
-    | `db_password`      | DB password                          |
-    | `install_dir`      | Directory to install application     | 
+    | Variable           | Description                             | 
+    |--------------------|-----------------------------------------|
+    | `domain`           | Domain name for the website             |
+    | `aws region`       | AWS region for the bucket               |
+    | `profile`          | AWS SSO Profile to be used              |
+    | `route53`          | ZXXXX ... Domain Hosted Zone ID         |
+    | `instance_tupe`    | e.g: T2.micro                           |
+    | `ami_id`           | ami-XXXXX used. This projects Ubuntu    |
+    | `new_user`         | sudo user to login EC2 Instances        |
+    | `new_password`     | sudo user password                      |
+    | `local_ip`         | Your IP Address. to secure log in /32   |
+    | `db_username`      | DB username with full access            |
+    | `db_password`      | DB password                             |
+    | `install_dir`      | Directory to install application        | 
 
 ## Usage
 
