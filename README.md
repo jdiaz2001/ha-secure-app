@@ -57,15 +57,16 @@ The infrastructure includes the following components:
 - **`outputs.tf`**: Outputs key information like ALB DNS name and RDS endpoint.
 - **`scripts/`**: Contains bash scripts for configuring instances (e.g., Apache, OpenCart, EFS).
 
-## Scripts. This applies specifically to your application. In this case this script were create dto install and configure Opencart
+## Scripts. 
+This applies specifically to your application. In this case, the scripts were create to install and configure Opencart
 
 - **`01-apache.sh`**: Sets up the Apache web server and PHP environment.
-- **`02-user.sh`**: Creates a new user with sudo privileges and configures SSH for password authentication.
+- **`02-user.sh`**: Creates a new user with sudo privileges and configures SSH for password authentication. (`Note:` This is not ideal... In my case, I wanted to use VS-Code Terminal to troubleshot the Opencart Scripts on the new Private Instances). You can use `Session Mannager` instead and disable SSH Password authentication.
 - **`03-efs.sh`**: Mounts the Elastic File System (EFS) and prepares the directory structure.
 - **`04-rds.sh`**: Installs the MariaDB client for interacting with the RDS database.
 - **`05-logs.sh`**: Configures and starts the CloudWatch Agent for centralized log monitoring.
 - **`06-opencart.sh`**: Installs and configures the OpenCart application.
-- **`07-oc-config.sh`**: Updates OpenCart configuration files for HTTPS and storage directory paths.
+- **`07-oc-config.sh`**: Updates OpenCart configuration files (config.php) for HTTPS and storage directory paths.
 - **`09-system-update.sh`**: Performs a final system update and upgrade.
 
 ## Prerequisites
