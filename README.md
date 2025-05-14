@@ -58,7 +58,7 @@ The infrastructure includes the following components:
 - **`scripts/`**: Contains bash scripts for configuring instances (e.g., Apache, OpenCart, EFS).
 
 ## Scripts. 
-This applies specifically to your application. In this case, the scripts were create to install and configure Opencart
+### This applies specifically to your application. In this case, the scripts were create to install and configure Opencart
 
 - **`01-apache.sh`**: Sets up the Apache web server and PHP environment.
 - **`02-user.sh`**: Creates a new user with sudo privileges and configures SSH for password authentication. (`Note:` This is not ideal... In my case, I wanted to use VS-Code Terminal to troubleshot the Opencart Scripts on the new Private Instances). You can use `Session Mannager` instead and disable SSH Password authentication.
