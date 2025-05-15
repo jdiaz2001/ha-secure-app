@@ -49,7 +49,7 @@ The infrastructure includes the following components:
 - **`asg.tf`**: Sets up the Auto Scaling Group and Launch Template.
 - **`efs.tf`**: Configures the Elastic File System and its mount targets. `Note:` EFS will store the Data for the application.
 - **`rds.tf`**: Defines the MariaDB RDS instance and its security group.
-- **`bastion.tf`**: Creates the bastion host and its security group. `Note:` The Bastion will the the entrance to access the Private Subnet Instances
+- **`bastion.tf`**: Creates the bastion host and its security group. `Note:` The Bastion will the entrance to access the Private Subnet Instances.
 - **`iam.tf`**: Configures IAM roles, policies, and instance profiles.
 - **`route53.tf`**: Manages DNS records for the domain.
 - **`acm.tf`**: Sets up the ACM certificate and validation records.
@@ -92,6 +92,14 @@ The infrastructure includes the following components:
     | `db_username`      | DB username with full access            |
     | `db_password`      | DB password                             |
     | `install_dir`      | Directory to install application        | 
+
+
+## Architecture Diagram
+
+Below is the architecture diagram for the Terraform S3 Project:
+
+![Terraform S3 Project Architecture](images/ha-project.png)
+
 
 ## Usage
 
