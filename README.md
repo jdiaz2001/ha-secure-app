@@ -78,20 +78,20 @@ The infrastructure includes the following components:
 - `SSO Authentication:` Our user account will authenticate via SSO into the target AWS account where resources will be deployed.
 - `Review and customize` the variables in `variables.tf` and `terraform.tfvars.example` files to override defaults.
 
-    | Variable           | Description                             | 
-    |--------------------|-----------------------------------------|
-    | `domain`           | Domain name for the website             |
-    | `aws region`       | AWS region for the bucket               |
-    | `profile`          | AWS SSO Profile to be used              |
-    | `route53`          | ZXXXX ... Domain Hosted Zone ID         |
-    | `instance_tupe`    | e.g: T2.micro                           |
-    | `ami_id`           | ami-XXXXX used. This projects Ubuntu    |
-    | `new_user`         | sudo user to login EC2 Instances        |
-    | `new_password`     | sudo user password                      |
-    | `local_ip`         | Your IP Address. to secure log in /32   |
-    | `db_username`      | DB username with full access            |
-    | `db_password`      | DB password                             |
-    | `install_dir`      | Directory to install application        | 
+    | Variable           | Description                                  | 
+    |--------------------|----------------------------------------------|
+    | `domain`           | Domain name for the website                  |
+    | `aws region`       | AWS region where resources are deployed      |
+    | `profile`          | AWS SSO Profile to be used                   |
+    | `route53`          | ZXXXX ... Domain Hosted Zone ID              |
+    | `instance_type`    | e.g: T2.micro                                |
+    | `ami_id`           | ami-XXXXX used. This projects uses Ubuntu    |
+    | `new_user`         | sudo user to login EC2 Instances             |
+    | `new_password`     | sudo user password                           |
+    | `local_ip`         | Your IP Address. to secure log in /32        |
+    | `db_username`      | DB username with full access                 |
+    | `db_password`      | DB password                                  |
+    | `install_dir`      | Directory to install application             |     
 
 
 ## Architecture Diagram
